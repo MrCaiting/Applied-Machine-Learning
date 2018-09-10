@@ -5,6 +5,8 @@ from skimage.transform import resize
 from sklearn import preprocessing
 import matplotlib.pyplot as plt
 from sklearn.naive_bayes import GaussianNB
+from sklearn.naive_bayes import BernoulliNB
+from sklearn.ensemble import RandomForestClassifier
 
 df_tr = pd.read_csv('train.csv')
 df_te = pd.read_csv('test.csv')
@@ -64,7 +66,23 @@ test_scaled = np.vstack(df_te['rescaled'].values)
 
 # Normalize the data
 # train_features = preprocessing.scale(train_features)
-g_nb = GaussianNB()
-b_nb = BernoulliNB()
-g_nb.fit(train_untouched, train_labels)
-b_nb.fit(train_untouched, train_labels)
+
+#######################################################
+# Begin Naive Bayes Training
+g_nb_1 = GaussianNB()
+g_nb_2 = GaussianNB()
+b_nb_1 = BernoulliNB()
+b_nb_2 = BernoulliNB()
+
+# For untouched
+g_nb_1.fit(train_untouched, train_labels)
+b_nb_1.fit(train_untouched, train_labels)
+# For streched
+g_nb_2.fit(train_scaled, train_labels)
+b_nb_2.fit(train_scaled, train_labels)
+
+# Validating
+print('Gaussian + untouched validation acc:' , g_nb_1.score(val_untouched, val_labels))
+print('Gaussian + stretched validation acc:' , g_nb_2.score(val_scaled, val_labels))
+print('Bernoulli + untouched validation acc:' , b_nb_1.socre(val_untouched, val_labels))
+print('Bernoulli + stretched validation acc:' , b_nb_2.score(val_scaled, val_labels))
