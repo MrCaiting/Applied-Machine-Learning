@@ -151,11 +151,11 @@ def get_mean_list (d_frame: pd.DataFrame, specify: str):
     mean_list = []
     if specify == 'g2_pred' or specify == 'b2_pred':
         for each in num_list:
-            temp_array = df_te[df_te['specify'] == each]['rescaled'].values
+            temp_array = df_te[df_te[specify] == each]['rescaled'].values
             mean_list.append(np.mean(temp_array, axis=0))
     elif specify == 'g1_pred' or specify == 'b1_pred':
         for each in num_list:
-            temp_df = df_te[df_te['specify'] == each]
+            temp_df = df_te[df_te[specify] == each]
             temp_df = temp_df.drop(columns = ['rescaled', 'g1_pred', 'g2_pred', 'b1_pred', 'b2_pred'])
             temp_array = temp_df.values
             mean_list.append(np.mean(temp_array, axis=0))
@@ -169,6 +169,15 @@ g2_list = get_mean_list(df_te, 'g2_pred')
 b1_list = get_mean_list(df_te, 'b1_pred')
 b2_list = get_mean_list(df_te, 'b2_pred')
 
+def plot_ten (the_list: list, mode: int):
+    for each_array in the_list:
+        plt.imshow(each_array.reshape((mode, mode)), cmap='gray')
+        plt.show()
+
+plot_ten(g1_list, 28)
+plot_ten(g2_list, 20)
+plot_ten(b1_list, 28)
+plot_ten(b2_list, 20)
 
 #######################################################
 # Begin Random Forest Training
