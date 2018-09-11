@@ -145,6 +145,31 @@ df_te['g2_pred'] = prediction_2
 df_te['b1_pred'] = prediction_3
 df_te['b2_pred'] = prediction_4
 
+
+def get_mean_list (d_frame: pd.DataFrame, specify: str):
+    num_list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    mean_list = []
+    if specify == 'g2_pred' or specify == 'b2_pred':
+        for each in num_list:
+            temp_array = df_te[df_te['specify'] == each]['rescaled'].values
+            mean_list.append(np.mean(temp_array, axis=0))
+    elif specify == 'g1_pred' or specify == 'b1_pred':
+        for each in num_list:
+            temp_df = df_te[df_te['specify'] == each]
+            temp_df = temp_df.drop(columns = ['rescaled', 'g1_pred', 'g2_pred', 'b1_pred', 'b2_pred'])
+            temp_array = temp_df.values
+            mean_list.append(np.mean(temp_array, axis=0))
+    else:
+        print('Invalid String!')
+
+    return mean_list
+
+g1_list = get_mean_list(df_te, 'g1_pred')
+g2_list = get_mean_list(df_te, 'g2_pred')
+b1_list = get_mean_list(df_te, 'b1_pred')
+b2_list = get_mean_list(df_te, 'b2_pred')
+
+
 #######################################################
 # Begin Random Forest Training
 rfc_1 = RandomForestClassifier(n_estimators=10, max_depth=4)
