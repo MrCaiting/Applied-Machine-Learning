@@ -56,12 +56,14 @@ def get_mse_list (data_set, og_data, data_avg, og_avg):
 result_list = []
 for key, data in all_data.items():
     result_list.append(get_mse_list(data, og, all_avg[key], og_avg))
+df_num = pd.DataFrame(data=result_list)
+df_num.columns = ['0N', '1N', '2N', '3N', '4N','0c', '1c', '2c', '3c', '4c']
+df_num.to_csv('numbers.csv', index=False)
 
 # Generating .csv file for the first task
 pca = PCA(n_components = 2, svd_solver='full')
 lower_d = pca.fit_transform(data2)
-result_c = pca.inverse_transform(lower_d) + df_2.mean().values
+result_c = pca.inverse_transform(lower_d)
 df = pd.DataFrame(data=result_c)
 df.columns = ['X1', 'X2', 'X3', 'X4']
-df.to_csv("cwu72_recon.csv", index=False)
-['0N', '1N', '2N', '3N', '4N','0c', '1c', '2c', '3c', '4c']
+df.to_csv("recon.csv", index=False)
