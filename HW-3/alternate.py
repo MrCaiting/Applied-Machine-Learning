@@ -16,11 +16,11 @@ df_4 = pd.read_csv('dataIV.csv')
 df_5 = pd.read_csv('dataV.csv')
 df_og = pd.read_csv('iris.csv')
 
-data1 = df_1.values - df_1.mean().values
-data2 = df_2.values - df_2.mean().values
-data3 = df_3.values - df_3.mean().values
-data4 = df_4.values - df_4.mean().values
-data5 = df_5.values - df_5.mean().values
+data1 = df_1.values
+data2 = df_2.values
+data3 = df_3.values
+data4 = df_4.values
+data5 = df_5.values
 og = df_og.values
 
 all_data = {1: data1, 2: data2, 3: data3, 4: data4, 5: data5}
@@ -38,17 +38,19 @@ def get_mse_list (data_set, og_data, data_avg, og_avg):
     n_list = []
     c_list = []
     for each in component_list:
-        pca = PCA(n_components=each, svd_solver='full')
-        lower_d = pca.fit_transform(data_set)
-        result_c = pca.inverse_transform(lower_d) + data_avg
-        result_n = pca.inverse_transform(lower_d) + og_avg
-        # n_list.append(mean_squared_error(og_data, result_n))
-        # c_list.append(mean_squared_error(og_data, result_c))
+        pca_c = PCA(n_components=each, svd_solver='full')
+        pca_n = PCA(n_components=each, svd_solver='full')
+
+        lower_c = pca_c.fit_transform(data_set)
+        pca_n.fit(og_data)
+        lower_n = pca_n.transform(data_set)
+        result_c = pca_c.inverse_transform(lower_c)
+        result_n = pca_n.inverse_transform(lower_n)
 
         # Calculating MSE using what is suggested by Piazza post
         n_list.append(get_dist(og_data, result_n))
         c_list.append(get_dist(og_data, result_c))
-        del pca
+        del pca_c, pca_n
     return n_list + c_list
 
 result_list = []
@@ -62,3 +64,4 @@ result_c = pca.inverse_transform(lower_d) + df_2.mean().values
 df = pd.DataFrame(data=result_c)
 df.columns = ['X1', 'X2', 'X3', 'X4']
 df.to_csv("cwu72_recon.csv", index=False)
+['0N', '1N', '2N', '3N', '4N','0c', '1c', '2c', '3c', '4c']
