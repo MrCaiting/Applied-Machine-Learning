@@ -11,7 +11,7 @@ sum = summary(data.lm)
 
 # Problem B, performing data removal
 # Simply re-run many times of the reduction to finalized the following 9 points
-data.rm <-data[-c(365, 369, 370, 372, 372, 381, 406, 411, 415, 419),]
+data.rm <-data[-c(365, 369, 370, 372, 373, 381, 406, 411, 415, 419),]
 data.rm.lm <- lm(data.rm$V14~data.rm$V1+data.rm$V2+data.rm$V3+data.rm$V4+data.rm$V5+data.rm$V6+data.rm$V7+data.rm$V8+data.rm$V9+data.rm$V10+data.rm$V11+data.rm$V12+data.rm$V13, data = data.rm)
 # par(mfrow=c(2,2), oma = c(0, 0, 2, 0))  # Used for formatting, not necessary here
 par(c(0, 0, 2, 0))
@@ -28,15 +28,15 @@ box.lm <- lm(data.box~data.rm$V1+data.rm$V2+data.rm$V3+data.rm$V4+data.rm$V5+dat
 
 # Plot the original graph
 data.stdres = rstandard(data.lm)
-plot(data.lm$fitted.values, data.stdres, ylab="Standardized Residuals", xlab="Fited Value", main="Raw Data") 
+plot(data.lm$fitted.values, data.stdres, ylab="Standardized Residuals", xlab="Fited Value", main="Raw Data")
 abline(0, 0, col='red')                  # the horizon
 
 # Plot the processed data
 box.stdres = rstandard(box.lm)
 box.lm.fitted_retrans = (box.lm$fitted.values*best_lam+1)^(1./best_lam)
-plot(box.lm.fitted_retrans, box.stdres, ylab="Standardized Residuals", xlab="Fited Value", main="Processed Data") 
+plot(box.lm.fitted_retrans, box.stdres, ylab="Standardized Residuals", xlab="Fited Value", main="Processed Data")
 abline(0, 0, col='red')                  # the horizon
 
 # Problem E
-plot(box.lm.fitted_retrans, data.rm.lm$fitted.values, ylab="True House Price", xlab="Fitted House Price", main="Fitted vs True House Price") 
+plot(box.lm.fitted_retrans, data.rm.lm$fitted.values, ylab="True House Price", xlab="Fitted House Price", main="Fitted vs True House Price")
 abline(1, 1, col='red')
