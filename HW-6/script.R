@@ -38,5 +38,5 @@ plot(box.lm.fitted_retrans, box.stdres, ylab="Standardized Residuals", xlab="Fit
 abline(0, 0, col='red')                  # the horizon
 
 # Problem E
-plot(box.lm.fitted_retrans, data.rm.lm$fitted.values, ylab="True House Price", xlab="Fitted House Price", main="Fitted vs True House Price")
+plot(box.lm.fitted_retrans, data.rm$V14, ylab="True House Price", xlab="Fitted House Price", main="Fitted vs True House Price")
 abline(1, 1, col='red')
