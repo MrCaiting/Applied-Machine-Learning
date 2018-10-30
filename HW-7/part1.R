@@ -1,0 +1,7 @@
+setwd('/home/ting/Documents/Applied-Machine-Learning/HW-7')
+library(glmnet)
+blog.train <- read.csv('BlogData/blogData_train.csv', header = FALSE)
+blog.xmat <- as.matrix(blog.train[, -c(281)])
+blog.ymat <- as.matrix(blog.train[, 281])
+cvfit = cv.glmnet(blog.xmat, blog.ymat, family='poisson')
+plot(cvfit)
